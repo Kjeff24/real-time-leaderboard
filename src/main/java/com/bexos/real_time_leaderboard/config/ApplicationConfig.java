@@ -1,40 +1,26 @@
 package com.bexos.real_time_leaderboard.config;
 
+import com.bexos.real_time_leaderboard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
-
-//    private final UserRepository userRepository;
-
-    // TODO: Use this after you configure user repository
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        return username -> userRepository.findByEmail(username)
-//                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-//    }
+    private final UserRepository userRepository;
 
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails userDetails = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("password")
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(userDetails);
+        return username -> userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
 
