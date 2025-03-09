@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     private final AuthService authService;
 
-    @PostMapping("/register")
+    @PostMapping("/signup")
     @ResponseStatus(HttpStatus.OK)
     public LoginResponse register(
             @RequestBody SignupRequest request
@@ -26,7 +26,7 @@ public class AuthController {
         return authService.register(request);
     }
 
-    @PostMapping("/authenticate")
+    @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     public LoginResponse register(
             @RequestBody LoginRequest request
