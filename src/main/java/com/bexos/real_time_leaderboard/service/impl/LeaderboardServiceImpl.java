@@ -1,8 +1,13 @@
 package com.bexos.real_time_leaderboard.service.impl;
 
+import com.bexos.real_time_leaderboard.dto.ScoreRequest;
+import com.bexos.real_time_leaderboard.handler.NotFoundException;
+import com.bexos.real_time_leaderboard.model.Game;
 import com.bexos.real_time_leaderboard.model.Score;
 import com.bexos.real_time_leaderboard.model.User;
+import com.bexos.real_time_leaderboard.repository.GameRepository;
 import com.bexos.real_time_leaderboard.repository.ScoreRepository;
+import com.bexos.real_time_leaderboard.repository.UserRepository;
 import com.bexos.real_time_leaderboard.service.LeaderboardService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +25,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class LeaderboardServiceImpl implements LeaderboardService {
     private final ScoreRepository scoreRepository;
+    private final UserRepository userRepository;
+    private final GameRepository gameRepository;
 
     /**
      * {@inheritDoc}
@@ -27,6 +34,21 @@ public class LeaderboardServiceImpl implements LeaderboardService {
     @Cacheable(value = "leaderboard")
     public List<Score> getTopScores(int limit) {
         return scoreRepository.findTopScores(limit);
+    }
+
+    public Score addScore(ScoreRequest request) {
+        Game game = gameRepository.findById(request.gameId())
+                .orElseThrow(() -> new NotFoundException("Game not found"));
+        User user = userRepository.findById(request.userId())
+                .orElseThrow(() -> new NotFoundException("User not found"));
+
+        Score score = Score.builder()
+                .game(game)
+                .user(user)
+                .score(request.score())
+                .build();
+
+        return scoreRepository.save(score);
     }
 
     /**

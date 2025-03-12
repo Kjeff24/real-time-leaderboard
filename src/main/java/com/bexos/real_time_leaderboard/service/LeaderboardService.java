@@ -1,5 +1,6 @@
 package com.bexos.real_time_leaderboard.service;
 
+import com.bexos.real_time_leaderboard.dto.ScoreRequest;
 import com.bexos.real_time_leaderboard.model.Score;
 
 import java.util.List;
@@ -24,4 +25,6 @@ public interface LeaderboardService {
      * @return List of top scores
      */
     List<Score> getTopScores(int limit);
+
+    Score addScore(ScoreRequest request);
 }
