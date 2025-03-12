@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ScoreRepository extends JpaRepository<Score, Long> {
+public interface ScoreRepository extends JpaRepository<Score, UUID> {
 
     @Query("SELECT s FROM Score s ORDER BY s.score DESC LIMIT ?1")
     List<Score> findTopScores(int limit);
