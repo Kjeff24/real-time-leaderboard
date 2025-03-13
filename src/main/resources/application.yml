@@ -1,6 +1,6 @@
 spring:
   application.name: real_time_leaderboard
-  profiles.active: dev
+  profiles.active: prod
   config:
     import: optional:file:.env[.properties]
   data.redis:
