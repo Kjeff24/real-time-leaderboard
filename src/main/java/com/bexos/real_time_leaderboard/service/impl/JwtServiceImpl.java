@@ -59,7 +59,7 @@ public class JwtServiceImpl implements JwtService {
                 .claims(extraClaims) // Sets additional claims
                 .subject(userDetails.getUsername()) // Sets the subject of the token
                 .issuedAt(new Date(System.currentTimeMillis())) // Sets the token's issued time
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24)) // Sets the token's expiration time
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 12)) // Sets the token's expiration time
                 .signWith(getSignKey(), Jwts.SIG.HS256) // Signs the token with the specified signature algorithm and key
                 .compact(); // Builds the token in compact form
 
