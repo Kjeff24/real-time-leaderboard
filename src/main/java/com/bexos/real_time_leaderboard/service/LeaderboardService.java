@@ -1,7 +1,7 @@
 package com.bexos.real_time_leaderboard.service;
 
 import com.bexos.real_time_leaderboard.dto.ScoreRequest;
-import com.bexos.real_time_leaderboard.model.Score;
+import com.bexos.real_time_leaderboard.dto.ScoreResponse;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,7 +12,7 @@ public interface LeaderboardService {
      * Otherwise, it creates a new entry.
      * Invalidates the leaderboard cache to refresh data.
      *
-     * @param userId User's ID
+     * @param userId   User's ID
      * @param newScore New score to be updated
      */
     void updateScore(UUID userId, int newScore);
@@ -24,7 +24,7 @@ public interface LeaderboardService {
      * @param limit Number of top scores to retrieve
      * @return List of top scores
      */
-    List<Score> getTopScores(int limit);
+    List<ScoreResponse> getTopScores(int limit);
 
-    Score addScore(ScoreRequest request);
+    ScoreResponse addScore(ScoreRequest request);
 }

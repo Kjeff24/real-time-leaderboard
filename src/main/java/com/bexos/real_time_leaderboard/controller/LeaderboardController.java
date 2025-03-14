@@ -1,11 +1,10 @@
 package com.bexos.real_time_leaderboard.controller;
 
 import com.bexos.real_time_leaderboard.dto.ScoreRequest;
-import com.bexos.real_time_leaderboard.model.Score;
+import com.bexos.real_time_leaderboard.dto.ScoreResponse;
 import com.bexos.real_time_leaderboard.service.LeaderboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +25,7 @@ public class LeaderboardController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public Score addScore(@RequestBody ScoreRequest request) {
+    public ScoreResponse addScore(@RequestBody ScoreRequest request) {
         return leaderboardService.addScore(request);
     }
 
@@ -38,14 +37,14 @@ public class LeaderboardController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Score> getTopScores(@RequestParam(defaultValue = "10") int limit) {
+    public List<ScoreResponse> getTopScores(@RequestParam(defaultValue = "10") int limit) {
         return leaderboardService.getTopScores(limit);
     }
 
     /**
      * Updates or adds a user's score.
      *
-     * @param userId User ID
+     * @param userId   User ID
      * @param newScore New score value
      */
     @PostMapping("/{userId}")
