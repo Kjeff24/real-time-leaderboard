@@ -1,15 +1,16 @@
 package com.bexos.real_time_leaderboard.dto;
 
 import lombok.Builder;
+import lombok.Data;
 
 import java.util.UUID;
 
 @Builder
-public record ScoreResponse(
-        UUID id,
-        UUID gameId,
-        UUID userId,
-        String email,
-        long score
-) {
+@Data
+public class ScoreResponse {
+    UUID id;
+    UUID gameId;
+    UUID userId;
+    String email;
+    long score;
 }
