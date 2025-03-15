@@ -1,5 +1,9 @@
 package com.bexos.real_time_leaderboard.config;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,6 +54,13 @@ public class RedisConfig {
         return RedisCacheConfiguration
                 .defaultCacheConfig()
                 .entryTtl(duration) // Sets the expiration time for cached data
-                .serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
+                .serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer(customObjectMapper())));
+    }
+
+    private ObjectMapper customObjectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules(); // Ensures proper serialization/deserialization
+        objectMapper.deactivateDefaultTyping(); // Disable type info to prevent @class from being added
+        return objectMapper;
     }
 }
