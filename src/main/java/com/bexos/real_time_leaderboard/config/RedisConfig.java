@@ -31,12 +31,12 @@ public class RedisConfig {
     @Bean
     public RedisCacheManager cacheManager() {
         // Default cache configuration with a TTL of 10 minutes
-        RedisCacheConfiguration cacheConfig = myDefaultCacheConfig(Duration.ofMinutes(10))
+        RedisCacheConfiguration cacheConfig = myDefaultCacheConfig(Duration.ofMinutes(1))
                 .disableCachingNullValues(); // Prevents caching of null values
 
         return RedisCacheManager.builder(redisConnectionFactory)
                 .cacheDefaults(cacheConfig) // Set default cache settings
-                .withCacheConfiguration("leaderboard", myDefaultCacheConfig(Duration.ofMinutes(5))) // Custom TTL for leaderboard cache
+                .withCacheConfiguration("leaderboard", myDefaultCacheConfig(Duration.ofMinutes(1))) // Custom TTL for leaderboard cache
                 .build();
     }
 
