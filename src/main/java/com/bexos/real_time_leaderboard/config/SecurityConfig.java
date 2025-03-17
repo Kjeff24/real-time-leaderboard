@@ -25,7 +25,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(authorizeHttpRequests ->
                         authorizeHttpRequests
-                                .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers("/auth/**", "/h2-console/**").permitAll()
                                 .anyRequest().authenticated())
                 .authenticationManager(authenticationManager)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
