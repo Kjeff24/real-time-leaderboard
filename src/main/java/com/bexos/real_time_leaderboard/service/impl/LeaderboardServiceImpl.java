@@ -1,7 +1,9 @@
 package com.bexos.real_time_leaderboard.service.impl;
 
 import com.bexos.real_time_leaderboard.dto.ScoreRequest;
+import com.bexos.real_time_leaderboard.dto.ScoreResponse;
 import com.bexos.real_time_leaderboard.handler.NotFoundException;
+import com.bexos.real_time_leaderboard.mapper.ScoreMapper;
 import com.bexos.real_time_leaderboard.model.Game;
 import com.bexos.real_time_leaderboard.model.Score;
 import com.bexos.real_time_leaderboard.model.User;
@@ -27,16 +29,20 @@ public class LeaderboardServiceImpl implements LeaderboardService {
     private final ScoreRepository scoreRepository;
     private final UserRepository userRepository;
     private final GameRepository gameRepository;
+    private final ScoreMapper scoreMapper;
 
     /**
      * {@inheritDoc}
      */
     @Cacheable(value = "leaderboard")
-    public List<Score> getTopScores(int limit) {
-        return scoreRepository.findTopScores(limit);
+    public List<ScoreResponse> getTopScores(int limit) {
+        return scoreRepository.findTopScores(limit)
+                .stream()
+                .map(scoreMapper::toScoreResponse)
+                .toList();
     }
 
-    public Score addScore(ScoreRequest request) {
+    public ScoreResponse addScore(ScoreRequest request) {
         Game game = gameRepository.findById(request.gameId())
                 .orElseThrow(() -> new NotFoundException("Game not found"));
         User user = userRepository.findById(request.userId())
@@ -48,7 +54,7 @@ public class LeaderboardServiceImpl implements LeaderboardService {
                 .score(request.score())
                 .build();
 
-        return scoreRepository.save(score);
+        return scoreMapper.toScoreResponse(scoreRepository.save(score));
     }
 
     /**
