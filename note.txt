@@ -1,0 +1,6 @@
+
+### Scores
+- **Submit Score**: `POST /api/v1/scores/submit`
+- **Get User Rank**: `GET /api/v1/leaderboard/user-rank/{userId}`
+- **Get Global Leaderboard**: `GET /api/v1/leaderboard/global`
+- **Top Players Report**: `GET /api/v1/leaderboard/top-players?startDate=&endDate=`
