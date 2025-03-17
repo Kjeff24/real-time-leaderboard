@@ -1,5 +1,9 @@
 package com.bexos.real_time_leaderboard.config;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,12 +35,12 @@ public class RedisConfig {
     @Bean
     public RedisCacheManager cacheManager() {
         // Default cache configuration with a TTL of 10 minutes
-        RedisCacheConfiguration cacheConfig = myDefaultCacheConfig(Duration.ofMinutes(10))
+        RedisCacheConfiguration cacheConfig = myDefaultCacheConfig(Duration.ofMinutes(1))
                 .disableCachingNullValues(); // Prevents caching of null values
 
         return RedisCacheManager.builder(redisConnectionFactory)
                 .cacheDefaults(cacheConfig) // Set default cache settings
-                .withCacheConfiguration("leaderboard", myDefaultCacheConfig(Duration.ofMinutes(5))) // Custom TTL for leaderboard cache
+                .withCacheConfiguration("leaderboard", myDefaultCacheConfig(Duration.ofMinutes(1))) // Custom TTL for leaderboard cache
                 .build();
     }
 
@@ -50,6 +54,13 @@ public class RedisConfig {
         return RedisCacheConfiguration
                 .defaultCacheConfig()
                 .entryTtl(duration) // Sets the expiration time for cached data
-                .serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
+                .serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer(customObjectMapper())));
+    }
+
+    private ObjectMapper customObjectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules(); // Ensures proper serialization/deserialization
+        objectMapper.deactivateDefaultTyping(); // Disable type info to prevent @class from being added
+        return objectMapper;
     }
 }
