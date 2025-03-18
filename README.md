@@ -68,6 +68,9 @@ docker compose -f 'postgres-docker-compose.yml' up -d --build
 - **Get Global Leaderboard**: `GET /api/v1/leaderboard`
 - **Update Score**: `POST /api/v1/leaderboard/:userId`
 
+### Screenshots
+![Redis](/assets/get-leaderboard.png)
+
 ## Contributing
 1. Fork the repository.
 2. Create a new branch (`feat/your-feature`).
