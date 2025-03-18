@@ -28,7 +28,15 @@ This project involves creating a backend system for a real-time leaderboard serv
    git clone https://github.com/Kjeff24/real-time-leaderboard.git
    cd real-time-leaderboard
    ```
-   2. **Configure the Environment**
+2. Run redis and redis insight (Graphical interface for analyzing redis data) container
+```sh
+docker compose -f 'redis-docker-compose.yml' up -d --build
+```
+3. If you don't have postgres, run
+```sh
+docker compose -f 'postgres-docker-compose.yml' up -d --build
+```
+4. **Configure the Environment**
    - Create a `.env` file with database and Redis configurations, example:
      ```env
      SECRET_KEY=BJcBl5N8R8DiOxLePasxb90OYxPERfa1UMoY3bxohNw=
@@ -55,6 +63,13 @@ This project involves creating a backend system for a real-time leaderboard serv
 - **Register**: `POST /api/v1/auth/signup`
 - **Login**: `POST /api/v1/auth/login`
 
+### Scores
+- **Submit Score**: `POST /api/v1/leaderboard`
+- **Get Global Leaderboard**: `GET /api/v1/leaderboard`
+- **Update Score**: `POST /api/v1/leaderboard/:userId`
+
+### Screenshots
+![Redis](/assets/get-leaderboard.png)
 
 ## Contributing
 1. Fork the repository.
